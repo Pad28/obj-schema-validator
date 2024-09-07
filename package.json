@@ -1,0 +1,32 @@
+{
+  "name": "obj-schema-validator",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "tsnd --respawn --clear ./src/app.ts",
+    "build-dev": "rimraf ./dist && tsc",
+    "start-dev": "npm run build && node ./dist/app.js"
+  },
+  "keywords": [
+    "validators",
+    "dto",
+    "object-validation",
+    "schema-validation",
+    "typescript",
+    "typescript-validators",
+    "data-transfer-object",
+    "nodejs",
+    "javascript",
+    "validation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "description": "Lightweight and flexible validator for objects and DTOs, designed for TypeScript and Node.js projects.",
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "rimraf": "^6.0.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.4"
+  }
+}
