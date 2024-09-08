@@ -12,16 +12,25 @@ class UserDto extends DtoSchema {
         },
         age: {
             required: false,
-            type: "number"
+            type: "string",
+            options: {
+                checkPattern: {
+
+                    check: true, // indicate that this option is active
+                    regExp: /^\d+$/ // indicate the regular expression to evaluate
+                },
+            }
         },
         city: {
             required: true,
             type: "string",
             options: {
-                includes: { check: true, list: ["Mexico", "Queretaro"] }
+                includes: {
+                    check: true, // indicate that this option is active
+                    list: ["Mexico", "Queretaro"] // indicate the list of allowed values 
+                }
             }
-        }
-
+        },
     };
 
 }
@@ -43,6 +52,5 @@ export const main = () => {
 
     } catch (error) {
         console.log(error);
-
     }
 }
