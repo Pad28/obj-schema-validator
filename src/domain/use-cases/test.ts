@@ -1,4 +1,4 @@
-import { DtoSchema } from "../../presenteation/DtoSchema";
+import { DtoSchema } from "../../presentation/DtoSchema";
 import { Schema } from "../types";
 
 class UserDto extends DtoSchema {
@@ -48,9 +48,10 @@ export const main = () => {
         const data = {
             name: "test lastname",
             age: "5",
-            email: "test@test.com",
+            email: "tEst@tesT.com",
             password: "test",
             city: "Mexico",
+            addres: "test address"
         }
 
         const [error, result] = new UserDto().create(data);

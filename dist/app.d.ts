@@ -1,3 +1,3 @@
 export * from "./domain/types";
-export * from "./presenteation/Validators";
-export * from "./presenteation/DtoSchema";
+export * from "./presentation/Validators";
+export * from "./presentation/DtoSchema";

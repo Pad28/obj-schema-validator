@@ -22,7 +22,8 @@ export class Validators<T extends Schema> {
 
     public validateSchema() {
         Object.keys(this.schema).forEach(k => {
-            if (!this.data[k] && this.schema[k].required) throw `${k} is missing`;
+            this.isRequired(k);
+
             const validator = this.validators[this.schema[k].type];
             validator(k);
 

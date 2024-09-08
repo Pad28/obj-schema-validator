@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.main = void 0;
-const DtoSchema_1 = require("../../presenteation/DtoSchema");
+const DtoSchema_1 = require("../../presentation/DtoSchema");
 class UserDto extends DtoSchema_1.DtoSchema {
     constructor() {
         super(...arguments);
@@ -49,9 +49,10 @@ const main = () => {
         const data = {
             name: "test lastname",
             age: "5",
-            email: "test@test.com",
+            email: "tEst@tesT.com",
             password: "test",
             city: "Mexico",
+            addres: "test address"
         };
         const [error, result] = new UserDto().create(data);
         if (error || !result)
