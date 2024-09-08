@@ -1,5 +1,3 @@
-import { DynamicObject } from ".";
-
 export type SchemaType =
     | "string"
     | "number"

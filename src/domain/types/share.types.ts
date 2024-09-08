@@ -1,4 +1,3 @@
-import { DtoSchema } from "../../presenteation/DtoSchema";
 import { Schema, SchemaValues } from "./schema.types";
 
 export type DynamicObject = { [key: string]: any };
