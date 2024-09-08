@@ -1,12 +1,13 @@
 {
   "name": "obj-schema-validator",
-  "version": "1.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "version": "1.0.5",
+  "main": "dist/app.js",
+  "types": "dist/app.d.ts",
   "scripts": {
     "dev": "tsnd --respawn --clear ./src/app.ts",
     "build-dev": "rimraf ./dist && tsc",
-    "start-dev": "npm run build && node ./dist/app.js"
+    "start-dev": "npm run build && node ./dist/app.js",
+    "publish": "npm run build && npm publish --access public"
   },
   "keywords": [
     "validators",
@@ -20,7 +21,7 @@
     "javascript",
     "validation"
   ],
-  "author": "",
+  "author": "Miguel Angel Padilla Pérez <mipape2281003@gmail.com>",
   "license": "MIT",
   "description": "Lightweight and flexible validator for objects and DTOs, designed for TypeScript and Node.js projects.",
   "devDependencies": {
@@ -28,5 +29,9 @@
     "rimraf": "^6.0.1",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "env-var": "^7.5.0"
   }
 }
