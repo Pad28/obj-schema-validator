@@ -11,6 +11,7 @@ export type SchemaOptions = {
     toTitleCase?: boolean,
     toUpperCase?: boolean,
     toLowerCase?: boolean,
+    isEmail?: boolean,
     includes?: { check: true, list: Array<any> },
     checkPattern?: { check: true, regExp: RegExp },
 }

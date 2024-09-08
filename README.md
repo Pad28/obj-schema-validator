@@ -49,6 +49,14 @@ schema: Schema = {
                 toTitleCase: true,
             }
         },
+        email: {
+            required: true,
+            type: "string",
+            options: {
+                toLowerCase: true,
+                isEmail: true,
+            }
+        },
         age: {
             required: false,
             type: "string",
@@ -65,7 +73,7 @@ schema: Schema = {
             options: {
                 includes: {
                     check: true, // indicate that this option is active
-                    list: ["Mexico", "Queretaro"] // indicate the list of allowed values 
+                    list: ["CDMX", "Queretaro"] // indicate the list of allowed values 
                 }
             }
         },
@@ -78,7 +86,7 @@ const data = {
     age: "5",
     email: "test@test.com",
     password: "test",
-    city: "Mexico",
+    city: "CDMX",
 }
 
 const [error, result] = new UserDto().create(data);

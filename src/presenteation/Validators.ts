@@ -31,6 +31,7 @@ export class Validators<T extends Schema> {
                 (options.toTitleCase) && this.toTitleCase(k);
                 (options.toLowerCase) && this.toLowerCase(k);
                 (options.toUpperCase) && this.toUpperCase(k);
+                (options.isEmail) && this.isEmail(k);
 
                 (options.checkPattern && options.checkPattern.check)
                     && this.checkPattern(k, options.checkPattern.regExp);
@@ -79,12 +80,6 @@ export class Validators<T extends Schema> {
         return (!this.data[key]) as boolean;
     }
 
-    public isEmail(key: string) {
-        if (this.isExisting(key)) return;
-        const regExp = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!regExp.test(this.data[key])) throw `${key} is not a valid email`;
-    }
-
     public isUIID(key: string) {
         if (this.isExisting(key)) return;
         const regExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -121,6 +116,13 @@ export class Validators<T extends Schema> {
         if (newDate.toString() === 'Invalid Date') throw `${key} is not a valid Date`;
         this.data[key] = newDate;
     }
+
+    public isEmail(key: string) {
+        if (this.isExisting(key)) return;
+        const regExp = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!regExp.test(this.data[key])) throw `${key} is not a valid email`;
+    }
+
 
     public toTitleCase(key: string) {
         if (this.isExisting(key)) return;
