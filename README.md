@@ -1,20 +1,19 @@
 # Obj-schema-validator
 
 ## Intalling
-___
-
-### Package manager
 **Using npm:** <br/>
-```$ npm install obj-schema-validator```
+```bash
+$ npm install obj-schema-validator
+```
 
 Once the package is installed, you can import the library using the import or require approach:
 
-```
+```js
 import { DtoSchema, Schema } from "obj-schema-validator";
 ```
 
 Later you must define a schema for the use of a dto, this by declaring a class that extends the DtoSchema class, you must implement the **schema** attribute of type Schema.
-```
+```js
 class UserDto extends DtoSchema {
     schema: Schema = {
         name: {
@@ -41,7 +40,7 @@ class UserDto extends DtoSchema {
 }
 ```
 The schema attribute is a hashmap where each key is an object in which it is declared whether it is required, the type, and as optional values ​​its initial value and an options object.
-```
+```js
 schema: Schema = {
         name: {
             required: true,
@@ -55,7 +54,6 @@ schema: Schema = {
             type: "string",
             options: {
                 checkPattern: {
-
                     check: true, // indicate that this option is active
                     regExp: /^\d+$/ // indicate the regular expression to evaluate
                 },
@@ -74,7 +72,7 @@ schema: Schema = {
     };
 ```
 You can use the **create** method of your dto to carry out the validations, this method returns an array with two positions, the first being the error and the second being the values ​​already validated.
-```
+```js
 const data = {
     name: "test lastname",
     age: "5",
