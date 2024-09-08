@@ -16,9 +16,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const envs_1 = require("./config/envs");
 const domain_1 = require("./domain");
-__exportStar(require("./domain/types/share.types"), exports);
+__exportStar(require("./domain/types"), exports);
 __exportStar(require("./presenteation/Validators"), exports);
-__exportStar(require("./presenteation/Validators"), exports);
+__exportStar(require("./presenteation/DtoSchema"), exports);
 (() => {
     if (!envs_1.envs.DEV)
         return;

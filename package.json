@@ -1,6 +1,6 @@
 {
   "name": "obj-schema-validator",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "main": "dist/app.js",
   "types": "dist/app.d.ts",
   "scripts": {
