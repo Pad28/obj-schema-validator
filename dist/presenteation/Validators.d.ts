@@ -11,13 +11,13 @@ export declare class Validators<T extends Schema> {
     get getSchema(): T;
     get getCurrentDateTime(): string;
     private isExisting;
-    isEmail(key: string): void;
     isUIID(key: string): void;
     isNumber(key: string): void;
     isFloat(key: string): void;
     isBoolean(key: string): void;
     isString(key: string): void;
     isDate(key: string): void;
+    isEmail(key: string): void;
     toTitleCase(key: string): void;
     includes(key: string, array: any[]): void;
     toUpperCase(key: string): void;

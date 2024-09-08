@@ -27,6 +27,7 @@ class Validators {
                 (options.toTitleCase) && this.toTitleCase(k);
                 (options.toLowerCase) && this.toLowerCase(k);
                 (options.toUpperCase) && this.toUpperCase(k);
+                (options.isEmail) && this.isEmail(k);
                 (options.checkPattern && options.checkPattern.check)
                     && this.checkPattern(k, options.checkPattern.regExp);
                 (options.includes && options.includes.check)
@@ -65,13 +66,6 @@ class Validators {
     }
     isExisting(key) {
         return (!this.data[key]);
-    }
-    isEmail(key) {
-        if (this.isExisting(key))
-            return;
-        const regExp = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!regExp.test(this.data[key]))
-            throw `${key} is not a valid email`;
     }
     isUIID(key) {
         if (this.isExisting(key))
@@ -115,6 +109,13 @@ class Validators {
         if (newDate.toString() === 'Invalid Date')
             throw `${key} is not a valid Date`;
         this.data[key] = newDate;
+    }
+    isEmail(key) {
+        if (this.isExisting(key))
+            return;
+        const regExp = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!regExp.test(this.data[key]))
+            throw `${key} is not a valid email`;
     }
     toTitleCase(key) {
         if (this.isExisting(key))

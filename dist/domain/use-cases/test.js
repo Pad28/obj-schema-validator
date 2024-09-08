@@ -13,6 +13,14 @@ class UserDto extends DtoSchema_1.DtoSchema {
                     toTitleCase: true,
                 }
             },
+            email: {
+                required: true,
+                type: "string",
+                options: {
+                    toLowerCase: true,
+                    isEmail: true,
+                }
+            },
             age: {
                 required: false,
                 type: "string",
