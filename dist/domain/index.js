@@ -14,14 +14,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const envs_1 = require("./config/envs");
-const domain_1 = require("./domain");
-__exportStar(require("./domain/types/share.types"), exports);
-__exportStar(require("./presenteation/Validators"), exports);
-__exportStar(require("./presenteation/Validators"), exports);
-(() => {
-    if (!envs_1.envs.DEV)
-        return;
-    (0, domain_1.main)();
-})();
-//# sourceMappingURL=app.js.map
+__exportStar(require("./types"), exports);
+__exportStar(require("./use-cases"), exports);
+//# sourceMappingURL=index.js.map
