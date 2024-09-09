@@ -27,10 +27,20 @@ class Validators {
                 (options.toLowerCase) && this.toLowerCase(k);
                 (options.toUpperCase) && this.toUpperCase(k);
                 (options.isEmail) && this.isEmail(k);
-                (options.checkPattern && options.checkPattern.check)
-                    && this.checkPattern(k, options.checkPattern.regExp);
-                (options.includes && options.includes.check)
-                    && this.includes(k, options.includes.list);
+                (!!options.checkPattern)
+                    && this.checkPattern(k, options.checkPattern);
+                (!!options.includes)
+                    && this.includes(k, options.includes);
+                (!!options.isLength)
+                    && this.islength(k, options.isLength);
+                (!!options.minLength)
+                    && this.minLength(k, options.minLength);
+                (!!options.maxLength)
+                    && this.maxLength(k, options.maxLength);
+                (!!options.minimunValue)
+                    && this.minimunValue(k, options.minimunValue);
+                (!!options.maximunValue)
+                    && this.maximunValue(k, options.maximunValue);
             }
             this.assignValueToScheme(k);
         });
@@ -148,6 +158,41 @@ class Validators {
             return;
         if (!pattern.test(this.data[key]))
             throw `${key} is not valid`;
+    }
+    islength(key, length) {
+        if (this.isExisting(key))
+            return;
+        this.isString(key);
+        if (this.data[key].length !== length)
+            throw `The length of the ${key} must be ${length}`;
+    }
+    minLength(key, length) {
+        if (this.isExisting(key))
+            return;
+        this.isString(key);
+        if (this.data[key].length < length)
+            throw `The minimun length of the ${key} must be ${length}`;
+    }
+    maxLength(key, length) {
+        if (this.isExisting(key))
+            return;
+        this.isString(key);
+        if (this.data[key].length > length)
+            throw `The maximun length of the ${key} must be ${length}`;
+    }
+    minimunValue(key, value) {
+        if (this.isExisting(key))
+            return;
+        this.isNumber(key);
+        if (this.data[key] < value)
+            throw `The minimun value of the ${key} must be ${value}`;
+    }
+    maximunValue(key, value) {
+        if (this.isExisting(key))
+            return;
+        this.isNumber(key);
+        if (this.data[key] < value)
+            throw `The maximun value of the ${key} must be ${value}`;
     }
 }
 exports.Validators = Validators;

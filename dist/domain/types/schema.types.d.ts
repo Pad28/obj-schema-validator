@@ -4,14 +4,13 @@ export type SchemaOptions = {
     toUpperCase?: boolean;
     toLowerCase?: boolean;
     isEmail?: boolean;
-    includes?: {
-        check: true;
-        list: Array<any>;
-    };
-    checkPattern?: {
-        check: true;
-        regExp: RegExp;
-    };
+    includes?: Array<any>;
+    checkPattern?: RegExp;
+    isLength?: number;
+    minLength?: number;
+    maxLength?: number;
+    minimunValue?: number;
+    maximunValue?: number;
 };
 export type Schema = {
     [key: string]: {

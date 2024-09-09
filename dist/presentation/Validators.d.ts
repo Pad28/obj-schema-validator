@@ -23,4 +23,9 @@ export declare class Validators<T extends Schema> {
     toUpperCase(key: string): void;
     toLowerCase(key: string): void;
     checkPattern(key: string, pattern: RegExp): void;
+    islength(key: string, length: number): void;
+    minLength(key: string, length: number): void;
+    maxLength(key: string, length: number): void;
+    minimunValue(key: string, value: number): void;
+    maximunValue(key: string, value: number): void;
 }
