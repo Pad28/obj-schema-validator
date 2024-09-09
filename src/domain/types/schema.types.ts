@@ -12,13 +12,13 @@ export type SchemaOptions = {
     toUpperCase?: boolean,
     toLowerCase?: boolean,
     isEmail?: boolean,
-    includes?: { check: true, list: Array<any> },
-    checkPattern?: { check: true, regExp: RegExp },
-    isLength?: { check: true, length: number },
-    minLength?: { check: true, length: number },
-    maxLength?: { check: true, length: number },
-    minimunValue?: { check: true, value: number },
-    maximunValue?: { check: true, value: number },
+    includes?: Array<any>,
+    checkPattern?: RegExp,
+    isLength?: number,
+    minLength?: number,
+    maxLength?: number,
+    minimunValue?: number,
+    maximunValue?: number,
 }
 
 export type Schema = {

@@ -31,7 +31,7 @@ class UserDto extends DtoSchema {
             required: true,
             type: "string",
             options: {
-                includes: { check: true, list: ["CDMX", "Queretaro"] }
+                includes:  ["CDMX", "Queretaro"]
             }
         }
 
@@ -59,25 +59,58 @@ schema: Schema = {
         },
         age: {
             required: false,
-            type: "string",
+            type: "number",
             options: {
-                checkPattern: {
-                    check: true, // indicate that this option is active
-                    regExp: /^\d+$/ // indicate the regular expression to evaluate
-                },
+                minimunValue: 5
             }
         },
         city: {
             required: true,
             type: "string",
             options: {
-                includes: {
-                    check: true, // indicate that this option is active
-                    list: ["CDMX", "Queretaro"] // indicate the list of allowed values 
-                }
+                includes: ["Mexico", "Queretaro"] // indicate the list of allowed values 
+
             }
         },
     };
+```
+The options object has these optional values
+```ts
+type options = {
+    toTitleCase: boolean, 
+    // Converts the string to "Title Case", that is, capitalizes the first letter of each word and lowercases the rest.
+
+    toUpperCase: boolean,
+    // Converts the entire string to uppercase.
+
+    toLowerCase: boolean,
+    // Converts the entire string to lowercase
+    
+    isEmail: boolean,
+    // Checks if the string is a valid email using a standard regular expression for validating emails
+
+    includes: Array<any>,
+    // Checks if the string is within the array of provided values.
+
+    checkPattern: RegExp,
+    // Check if the string matches the provided pattern (regular expression).
+    
+    isLength: number,
+    // Checks if the length of the string is exactly equal to the provided number.
+    
+    minLength: number,
+    // Checks if the length of the string is greater than or equal to the provided number.
+
+    maxLength: number,
+    // Checks if the length of the string is less than or equal to the provided number.
+
+    minimunValue: number,
+    // Checks if the numeric value of the string is greater than or equal to the provided number.
+        
+    maximunValue: number,
+    // Checks if the numeric value of the string is less than or equal to the provided number.
+}
+
 ```
 You can use the **create** method of your dto to carry out the validations, this method returns an array with two positions, the first being the error and the second being the values ​​already validated.
 ```js

@@ -29,31 +29,32 @@ export class Validators<T extends Schema> {
 
             if (this.schema[k].options) {
                 const { options } = this.schema[k];
+
                 (options.toTitleCase) && this.toTitleCase(k);
                 (options.toLowerCase) && this.toLowerCase(k);
                 (options.toUpperCase) && this.toUpperCase(k);
                 (options.isEmail) && this.isEmail(k);
 
-                (options.checkPattern && options.checkPattern.check)
-                    && this.checkPattern(k, options.checkPattern.regExp);
+                (!!options.checkPattern)
+                    && this.checkPattern(k, options.checkPattern);
 
-                (options.includes && options.includes.check)
-                    && this.includes(k, options.includes.list);
+                (!!options.includes)
+                    && this.includes(k, options.includes);
 
-                (options.isLength && options.isLength.check)
-                    && this.islength(k, options.isLength.length);
+                (!!options.isLength)
+                    && this.islength(k, options.isLength);
 
-                (options.minLength && options.minLength.check)
-                    && this.minLength(k, options.minLength.length);
+                (!!options.minLength)
+                    && this.minLength(k, options.minLength);
 
-                (options.maxLength && options.maxLength.check)
-                    && this.maxLength(k, options.maxLength.length);
+                (!!options.maxLength)
+                    && this.maxLength(k, options.maxLength);
 
-                (options.minimunValue && options.minimunValue.check)
-                    && this.minimunValue(k, options.minimunValue.value);
+                (!!options.minimunValue)
+                    && this.minimunValue(k, options.minimunValue);
 
-                (options.maximunValue && options.maximunValue.check)
-                    && this.maximunValue(k, options.maximunValue.value);
+                (!!options.maximunValue)
+                    && this.maximunValue(k, options.maximunValue);
             }
 
             this.assignValueToScheme(k);
@@ -93,7 +94,7 @@ export class Validators<T extends Schema> {
     }
 
     private isExisting(key: string): boolean {
-        return (!!this.data[key]) as boolean;
+        return (!this.data[key]) as boolean;
     }
 
     public isUIID(key: string) {
@@ -190,11 +191,13 @@ export class Validators<T extends Schema> {
     }
 
     public minimunValue(key: string, value: number) {
+        if (this.isExisting(key)) return;
         this.isNumber(key);
         if (this.data[key] < value) throw `The minimun value of the ${key} must be ${value}`;
     }
 
     public maximunValue(key: string, value: number) {
+        if (this.isExisting(key)) return;
         this.isNumber(key);
         if (this.data[key] < value) throw `The maximun value of the ${key} must be ${value}`;
     }

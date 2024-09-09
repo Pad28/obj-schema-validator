@@ -20,23 +20,17 @@ class UserDto extends DtoSchema {
         },
         age: {
             required: false,
-            type: "string",
+            type: "number",
             options: {
-                checkPattern: {
-
-                    check: true, // indicate that this option is active
-                    regExp: /^\d+$/ // indicate the regular expression to evaluate
-                },
+                minimunValue: 5
             }
         },
         city: {
             required: true,
             type: "string",
             options: {
-                includes: {
-                    check: true, // indicate that this option is active
-                    list: ["Mexico", "Queretaro"] // indicate the list of allowed values 
-                }
+                includes: ["Mexico", "Queretaro"] // indicate the list of allowed values 
+
             }
         },
     };
