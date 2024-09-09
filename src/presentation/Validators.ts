@@ -39,6 +39,21 @@ export class Validators<T extends Schema> {
 
                 (options.includes && options.includes.check)
                     && this.includes(k, options.includes.list);
+
+                (options.isLength && options.isLength.check)
+                    && this.islength(k, options.isLength.length);
+
+                (options.minLength && options.minLength.check)
+                    && this.minLength(k, options.minLength.length);
+
+                (options.maxLength && options.maxLength.check)
+                    && this.maxLength(k, options.maxLength.length);
+
+                (options.minimunValue && options.minimunValue.check)
+                    && this.minimunValue(k, options.minimunValue.value);
+
+                (options.maximunValue && options.maximunValue.check)
+                    && this.maximunValue(k, options.maximunValue.value);
             }
 
             this.assignValueToScheme(k);
@@ -78,7 +93,7 @@ export class Validators<T extends Schema> {
     }
 
     private isExisting(key: string): boolean {
-        return (!this.data[key]) as boolean;
+        return (!!this.data[key]) as boolean;
     }
 
     public isUIID(key: string) {
@@ -155,4 +170,33 @@ export class Validators<T extends Schema> {
         if (this.isExisting(key)) return;
         if (!pattern.test(this.data[key])) throw `${key} is not valid`;
     }
+
+    public islength(key: string, length: number) {
+        if (this.isExisting(key)) return;
+        this.isString(key);
+        if (this.data[key].length !== length) throw `The length of the ${key} must be ${length}`;
+    }
+
+    public minLength(key: string, length: number) {
+        if (this.isExisting(key)) return;
+        this.isString(key);
+        if (this.data[key].length < length) throw `The minimun length of the ${key} must be ${length}`;
+    }
+
+    public maxLength(key: string, length: number) {
+        if (this.isExisting(key)) return;
+        this.isString(key);
+        if (this.data[key].length > length) throw `The maximun length of the ${key} must be ${length}`;
+    }
+
+    public minimunValue(key: string, value: number) {
+        this.isNumber(key);
+        if (this.data[key] < value) throw `The minimun value of the ${key} must be ${value}`;
+    }
+
+    public maximunValue(key: string, value: number) {
+        this.isNumber(key);
+        if (this.data[key] < value) throw `The maximun value of the ${key} must be ${value}`;
+    }
+
 }
