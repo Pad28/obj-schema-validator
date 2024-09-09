@@ -75,7 +75,7 @@ schema: Schema = {
     };
 ```
 The options object has these optional values
-```ts
+```js
 type options = {
     toTitleCase: boolean, 
     // Converts the string to "Title Case", that is, capitalizes the first letter of each word and lowercases the rest.
