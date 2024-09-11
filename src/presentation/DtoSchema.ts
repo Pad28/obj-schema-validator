@@ -1,4 +1,4 @@
-import { Schema, DynamicObject, ValidationDtoResult } from "../domain";
+import { Schema, DynamicObject, SchemaValues } from "../domain";
 import { Validators } from "./Validators";
 export abstract class DtoSchema {
 
@@ -15,11 +15,12 @@ export abstract class DtoSchema {
         }
     }
 
-    get values(): { [K in keyof this['schema']]: this['schema'][K]['value'] } {
+    get getValues(): SchemaValues<Schema> {
         const obj: DynamicObject = {};
         for (const k in this.schema) {
-            if (this.schema[k].value) obj[k] = this.schema[k].value;
+            const { value } = this.schema[k];
+            if (typeof value == "boolean" || value) obj[k] = value;
         }
-        return obj as { [K in keyof this['schema']]: this['schema'][K]['value'] };
+        return obj as SchemaValues<Schema>;
     }
 }

@@ -13,41 +13,46 @@ class Validators {
             "number": this.isNumber.bind(this),
             "string": this.isString.bind(this),
             "uuid": this.isUIID.bind(this),
-            "boolean": () => { },
+            "boolean": this.isBoolean.bind(this),
         };
     }
     validateSchema() {
-        Object.keys(this.schema).forEach(k => {
-            this.isRequired(k);
-            const validator = this.validators[this.schema[k].type];
-            validator(k);
-            if (this.schema[k].options) {
-                const { options } = this.schema[k];
-                (options.toTitleCase) && this.toTitleCase(k);
-                (options.toLowerCase) && this.toLowerCase(k);
-                (options.toUpperCase) && this.toUpperCase(k);
-                (options.isEmail) && this.isEmail(k);
-                (!!options.checkPattern)
-                    && this.checkPattern(k, options.checkPattern);
-                (!!options.includes)
-                    && this.includes(k, options.includes);
-                (!!options.isLength)
-                    && this.islength(k, options.isLength);
-                (!!options.minLength)
-                    && this.minLength(k, options.minLength);
-                (!!options.maxLength)
-                    && this.maxLength(k, options.maxLength);
-                (!!options.minimunValue)
-                    && this.minimunValue(k, options.minimunValue);
-                (!!options.maximunValue)
-                    && this.maximunValue(k, options.maximunValue);
+        Object.keys(this.schema).forEach(key => {
+            this.isRequired(key);
+            const validator = this.validators[this.schema[key].type];
+            validator(key);
+            const { options } = this.schema[key];
+            if (options) {
+                const applyOption = (optionName, handler) => {
+                    if (options[optionName])
+                        handler(key, options[optionName]);
+                };
+                applyOption("toTitleCase", this.toTitleCase.bind(this));
+                applyOption("toUpperCase", this.toUpperCase.bind(this));
+                applyOption("toLowerCase", this.toLowerCase.bind(this));
+                applyOption("isEmail", this.isEmail.bind(this));
+                applyOption("checkPattern", (key, pattern) => this.checkPattern(key, pattern));
+                applyOption("includes", (key, array) => this.includes(key, array));
+                applyOption("isLength", (key, length) => this.islength(key, length));
+                applyOption("minLength", (key, length) => this.minLength(key, length));
+                applyOption("maxLength", (key, length) => this.maxLength(key, length));
+                applyOption("minimunValue", (key, value) => this.minimunValue(key, value));
+                applyOption("maximunValue", (key, value) => this.maximunValue(key, value));
             }
-            this.assignValueToScheme(k);
+            this.assignValueToScheme(key);
         });
     }
     isRequired(key) {
-        if (!this.data[key] && this.schema[key].required)
+        const schemaValue = this.schema[key];
+        const dataValue = this.data[key];
+        if (schemaValue.type === "boolean" && schemaValue.required) {
+            const booleanString = String(dataValue);
+            if (!["true", "false"].includes(booleanString))
+                throw `${key} is missing`;
+        }
+        else if (!dataValue && schemaValue.required) {
             throw `${key} is missing`;
+        }
     }
     assignValueToScheme(key) {
         this.schema[key].value = this.data[key];
@@ -55,8 +60,9 @@ class Validators {
     get getValues() {
         const obj = {};
         for (const k in this.schema) {
-            if (this.schema[k].value)
-                obj[k] = this.schema[k].value;
+            const { value } = this.schema[k];
+            if (typeof value == "boolean" || value)
+                obj[k] = value;
         }
         return obj;
     }
@@ -99,10 +105,10 @@ class Validators {
         this.data[key] = num;
     }
     isBoolean(key) {
-        if (this.isExisting(key))
-            return;
-        if (typeof this.data[key] !== 'boolean')
+        const dataValue = String(this.data[key]);
+        if (dataValue !== 'true' && dataValue !== "false")
             throw `${key} is not a valid boolean`;
+        this.data[key] = (dataValue == "true");
     }
     isString(key) {
         if (this.isExisting(key))
@@ -183,14 +189,18 @@ class Validators {
     minimunValue(key, value) {
         if (this.isExisting(key))
             return;
-        this.isNumber(key);
+        (this.schema[key].type === "number")
+            ? this.isNumber(key)
+            : this.isFloat(key);
         if (this.data[key] < value)
             throw `The minimun value of the ${key} must be ${value}`;
     }
     maximunValue(key, value) {
         if (this.isExisting(key))
             return;
-        this.isNumber(key);
+        (this.schema[key].type === "number")
+            ? this.isNumber(key)
+            : this.isFloat(key);
         if (this.data[key] < value)
             throw `The maximun value of the ${key} must be ${value}`;
     }

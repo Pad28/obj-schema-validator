@@ -20,7 +20,7 @@ class UserDto extends DtoSchema {
         },
         age: {
             required: false,
-            type: "number",
+            type: "float",
             options: {
                 minimunValue: 5
             }
@@ -33,6 +33,10 @@ class UserDto extends DtoSchema {
 
             }
         },
+        verify: {
+            required: false,
+            type: "boolean"
+        }
     };
 
 }
@@ -41,11 +45,12 @@ export const main = () => {
     try {
         const data = {
             name: "test lastname",
-            age: "5",
-            email: "tEst@tesT.com",
+            age: 5.12,
+            email: "tEst@tesT.coM",
             password: "test",
             city: "Mexico",
-            addres: "test address"
+            addres: "test address",
+            verify: "true",
         }
 
         const [error, result] = new UserDto().create(data);

@@ -16,53 +16,53 @@ export class Validators<T extends Schema> {
             "number": this.isNumber.bind(this),
             "string": this.isString.bind(this),
             "uuid": this.isUIID.bind(this),
-            "boolean": () => { },
+            "boolean": this.isBoolean.bind(this),
         };
+
     }
 
     public validateSchema() {
-        Object.keys(this.schema).forEach(k => {
-            this.isRequired(k);
+        Object.keys(this.schema).forEach(key => {
+            this.isRequired(key);
 
-            const validator = this.validators[this.schema[k].type];
-            validator(k);
+            const validator = this.validators[this.schema[key].type];
+            validator(key);
 
-            if (this.schema[k].options) {
-                const { options } = this.schema[k];
+            const { options } = this.schema[key];
+            if (options) {
+                const applyOption = (optionName: keyof SchemaOptions, handler: Function) => {
+                    if (options[optionName]) handler(key, options[optionName]);
+                };
 
-                (options.toTitleCase) && this.toTitleCase(k);
-                (options.toLowerCase) && this.toLowerCase(k);
-                (options.toUpperCase) && this.toUpperCase(k);
-                (options.isEmail) && this.isEmail(k);
-
-                (!!options.checkPattern)
-                    && this.checkPattern(k, options.checkPattern);
-
-                (!!options.includes)
-                    && this.includes(k, options.includes);
-
-                (!!options.isLength)
-                    && this.islength(k, options.isLength);
-
-                (!!options.minLength)
-                    && this.minLength(k, options.minLength);
-
-                (!!options.maxLength)
-                    && this.maxLength(k, options.maxLength);
-
-                (!!options.minimunValue)
-                    && this.minimunValue(k, options.minimunValue);
-
-                (!!options.maximunValue)
-                    && this.maximunValue(k, options.maximunValue);
+                applyOption("toTitleCase", this.toTitleCase.bind(this));
+                applyOption("toUpperCase", this.toUpperCase.bind(this));
+                applyOption("toLowerCase", this.toLowerCase.bind(this));
+                applyOption("isEmail", this.isEmail.bind(this));
+                applyOption("checkPattern", (key: string, pattern: RegExp) => this.checkPattern(key, pattern));
+                applyOption("includes", (key: string, array: any[]) => this.includes(key, array));
+                applyOption("isLength", (key: string, length: number) => this.islength(key, length));
+                applyOption("minLength", (key: string, length: number) => this.minLength(key, length));
+                applyOption("maxLength", (key: string, length: number) => this.maxLength(key, length));
+                applyOption("minimunValue", (key: string, value: number) => this.minimunValue(key, value));
+                applyOption("maximunValue", (key: string, value: number) => this.maximunValue(key, value));
             }
 
-            this.assignValueToScheme(k);
+            this.assignValueToScheme(key);
         });
     }
 
     public isRequired(key: string) {
-        if (!this.data[key] && this.schema[key].required) throw `${key} is missing`;
+        const schemaValue = this.schema[key];
+        const dataValue = this.data[key];
+
+        if (schemaValue.type === "boolean" && schemaValue.required) {
+            const booleanString = String(dataValue);
+            if (!["true", "false"].includes(booleanString)) throw `${key} is missing`;
+
+        } else if (!dataValue && schemaValue.required) {
+            throw `${key} is missing`;
+        }
+
     }
 
     private assignValueToScheme(key: string) {
@@ -72,8 +72,8 @@ export class Validators<T extends Schema> {
     get getValues(): SchemaValues<T> {
         const obj: DynamicObject = {};
         for (const k in this.schema) {
-
-            if (this.schema[k].value) obj[k] = this.schema[k].value;
+            const { value } = this.schema[k];
+            if (typeof value == "boolean" || value) obj[k] = value;
         }
         return obj as SchemaValues<T>;
     }
@@ -117,8 +117,9 @@ export class Validators<T extends Schema> {
     }
 
     public isBoolean(key: string) {
-        if (this.isExisting(key)) return;
-        if (typeof this.data[key] !== 'boolean') throw `${key} is not a valid boolean`;
+        const dataValue = String(this.data[key]);
+        if (dataValue !== 'true' && dataValue !== "false") throw `${key} is not a valid boolean`;
+        this.data[key] = (dataValue == "true");
     }
 
     public isString(key: string) {
@@ -192,13 +193,21 @@ export class Validators<T extends Schema> {
 
     public minimunValue(key: string, value: number) {
         if (this.isExisting(key)) return;
-        this.isNumber(key);
+
+        (this.schema[key].type === "number")
+            ? this.isNumber(key)
+            : this.isFloat(key);
+
         if (this.data[key] < value) throw `The minimun value of the ${key} must be ${value}`;
     }
 
     public maximunValue(key: string, value: number) {
         if (this.isExisting(key)) return;
-        this.isNumber(key);
+
+        (this.schema[key].type === "number")
+            ? this.isNumber(key)
+            : this.isFloat(key);
+
         if (this.data[key] < value) throw `The maximun value of the ${key} must be ${value}`;
     }
 

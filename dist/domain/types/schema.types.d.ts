@@ -12,6 +12,20 @@ export type SchemaOptions = {
     minimunValue?: number;
     maximunValue?: number;
 };
+export type OptionsForType<T extends SchemaType> = T extends "string" ? {
+    toTitleCase?: boolean;
+    toUpperCase?: boolean;
+    toLowerCase?: boolean;
+    isEmail?: boolean;
+    includes?: any[];
+    checkPattern?: RegExp;
+    isLength?: number;
+    minLength?: number;
+    maxLength?: number;
+} : T extends "number" | "float" ? {
+    minimunValue?: number;
+    maximunValue?: number;
+} : {};
 export type Schema = {
     [key: string]: {
         required: boolean;

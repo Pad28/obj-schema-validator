@@ -14,11 +14,12 @@ class DtoSchema {
             return [error];
         }
     }
-    get values() {
+    get getValues() {
         const obj = {};
         for (const k in this.schema) {
-            if (this.schema[k].value)
-                obj[k] = this.schema[k].value;
+            const { value } = this.schema[k];
+            if (typeof value == "boolean" || value)
+                obj[k] = value;
         }
         return obj;
     }
