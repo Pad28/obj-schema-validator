@@ -18,7 +18,7 @@ class DtoSchema {
         const obj = {};
         for (const k in this.schema) {
             const { value } = this.schema[k];
-            if (typeof value == "boolean" || value)
+            if (value !== undefined)
                 obj[k] = value;
         }
         return obj;

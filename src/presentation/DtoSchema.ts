@@ -19,7 +19,7 @@ export abstract class DtoSchema {
         const obj: DynamicObject = {};
         for (const k in this.schema) {
             const { value } = this.schema[k];
-            if (typeof value == "boolean" || value) obj[k] = value;
+            if (value !== undefined) obj[k] = value;
         }
         return obj as SchemaValues<Schema>;
     }

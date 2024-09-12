@@ -45,14 +45,8 @@ class Validators {
     isRequired(key) {
         const schemaValue = this.schema[key];
         const dataValue = this.data[key];
-        if (schemaValue.type === "boolean" && schemaValue.required) {
-            const booleanString = String(dataValue);
-            if (!["true", "false"].includes(booleanString))
-                throw `${key} is missing`;
-        }
-        else if (!dataValue && schemaValue.required) {
+        if (dataValue == undefined && schemaValue.required)
             throw `${key} is missing`;
-        }
     }
     assignValueToScheme(key) {
         this.schema[key].value = this.data[key];
@@ -61,7 +55,7 @@ class Validators {
         const obj = {};
         for (const k in this.schema) {
             const { value } = this.schema[k];
-            if (typeof value == "boolean" || value)
+            if (value !== undefined)
                 obj[k] = value;
         }
         return obj;
@@ -80,24 +74,25 @@ class Validators {
         return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
     }
     isExisting(key) {
-        return (!this.data[key]);
+        return (this.data[key] !== undefined);
     }
     isUIID(key) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         const regExp = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
         if (!regExp.test(this.data[key]))
             throw `${key} is not a valid UUID`;
     }
     isNumber(key) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
-        if (isNaN(Number(this.data[key])))
+        const num = parseInt(this.data[key]);
+        if (isNaN(num))
             throw `${key} is not a valid number`;
-        this.data[key] = parseInt(this.data[key]);
+        this.data[key] = num;
     }
     isFloat(key) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         const num = parseFloat(this.data[key]);
         if (isNaN(num))
@@ -105,20 +100,22 @@ class Validators {
         this.data[key] = num;
     }
     isBoolean(key) {
+        if (!this.isExisting(key))
+            return;
         const dataValue = String(this.data[key]);
-        if (dataValue !== 'true' && dataValue !== "false")
+        if (!["true", "false"].includes(dataValue))
             throw `${key} is not a valid boolean`;
         this.data[key] = (dataValue == "true");
     }
     isString(key) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         if (typeof this.data[key] !== "string")
             throw `${key} is not a valid string`;
         this.data[key] = this.data[key];
     }
     isDate(key) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         const newDate = new Date(this.data[key]);
         if (newDate.toString() === 'Invalid Date')
@@ -126,14 +123,14 @@ class Validators {
         this.data[key] = newDate;
     }
     isEmail(key) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         const regExp = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
         if (!regExp.test(this.data[key]))
             throw `${key} is not a valid email`;
     }
     toTitleCase(key) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         const str = this.data[key]
             .toLocaleLowerCase()
@@ -144,50 +141,50 @@ class Validators {
         this.data[key] = str;
     }
     includes(key, array) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         if (!array.includes(this.data[key]))
             throw `${key} is not included in [${array}]`;
     }
     toUpperCase(key) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         this.data[key] = this.data[key].toUpperCase();
     }
     toLowerCase(key) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         this.data[key] = this.data[key].toLocaleLowerCase();
     }
     checkPattern(key, pattern) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         if (!pattern.test(this.data[key]))
             throw `${key} is not valid`;
     }
     islength(key, length) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         this.isString(key);
         if (this.data[key].length !== length)
             throw `The length of the ${key} must be ${length}`;
     }
     minLength(key, length) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         this.isString(key);
         if (this.data[key].length < length)
             throw `The minimun length of the ${key} must be ${length}`;
     }
     maxLength(key, length) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         this.isString(key);
         if (this.data[key].length > length)
             throw `The maximun length of the ${key} must be ${length}`;
     }
     minimunValue(key, value) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         (this.schema[key].type === "number")
             ? this.isNumber(key)
@@ -196,7 +193,7 @@ class Validators {
             throw `The minimun value of the ${key} must be ${value}`;
     }
     maximunValue(key, value) {
-        if (this.isExisting(key))
+        if (!this.isExisting(key))
             return;
         (this.schema[key].type === "number")
             ? this.isNumber(key)
