@@ -26,14 +26,14 @@ export type OptionsForType<T extends SchemaType> = T extends "string" ? {
     minimunValue?: number;
     maximunValue?: number;
 } : {};
-export type Schema = {
+export interface Schema {
     [key: string]: {
         required: boolean;
         type: SchemaType;
         value?: any;
         options?: SchemaOptions;
     };
-};
+}
 export type SchemaValues<T extends Schema> = {
     [k in keyof T]: T[k]["value"];
 };
