@@ -3,6 +3,7 @@ import { SchemaType, Schema, DynamicObject, SchemaValues, SchemaOptions } from "
 export class Validators<T extends Schema> {
 
     private validators: Record<SchemaType, (key: string) => void>;
+
     constructor(
         private readonly data: DynamicObject,
         private readonly schema: T,

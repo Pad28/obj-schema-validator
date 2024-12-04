@@ -39,7 +39,7 @@ export type OptionsForType<T extends SchemaType> =
         maximunValue?: number;
     } : {};
 
-export type Schema = {
+export interface Schema {
     [key: string]: {
         required: boolean,
         type: SchemaType,
